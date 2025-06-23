@@ -47,7 +47,7 @@ func GetMachineFingerprint() (string, error) {
 
 	// 确保排序稳定
 	sort.Strings(macs)
-	fmt.Println(macs)
+	// fmt.Println(macs)
 
 	// 生成 SHA256 指纹
 	hash := sha256.Sum256([]byte(strings.Join(macs, "|")))
