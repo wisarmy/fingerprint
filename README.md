@@ -1,2 +1,2 @@
 # fingerprint
-Generate fingerprint for machine
+Generate fingerprint
