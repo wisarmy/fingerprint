@@ -3,6 +3,7 @@ package v1
 import (
 	"crypto/sha256"
 	"fmt"
+	"log/slog"
 	"net"
 	"sort"
 	"strings"
@@ -27,7 +28,7 @@ func GetMachineFingerprint() (string, error) {
 	// sit: IPv6-in-IPv4 隧道
 	// wwan: 无线广域网 (通常是虚拟的)
 	virtualNetPrefixes := []string{
-		"lo", "veth", "docker", "br-", "vmnet", "vboxnet", "tap", "tun", "ipsec", "ppp", "bond", "dummy", "sit", "wwan",
+		"lo", "veth", "docker", "br-", "vmnet", "vboxnet", "tap", "tun", "ipsec", "ppp", "bond", "dummy", "sit", "wwan", "awdl",
 	}
 
 	interfaces, err := net.Interfaces()
@@ -60,6 +61,9 @@ func GetMachineFingerprint() (string, error) {
 		for _, prefix := range virtualNetPrefixes {
 			if strings.HasPrefix(strings.ToLower(iface.Name), prefix) {
 				isVirtual = true
+
+				slog.Debug("跳过虚拟网络接口", "name", iface.Name, "mac", mac)
+
 				break
 			}
 		}
@@ -71,6 +75,7 @@ func GetMachineFingerprint() (string, error) {
 		if _, exists := uniqueMACs[mac]; !exists {
 			uniqueMACs[mac] = struct{}{}
 			physicalMACs = append(physicalMACs, mac)
+			slog.Debug("发现物理网络接口", "name", iface.Name, "mac", mac)
 		}
 	}
 
