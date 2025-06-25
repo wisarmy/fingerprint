@@ -28,7 +28,8 @@ func GetMachineFingerprint() (string, error) {
 	// sit: IPv6-in-IPv4 隧道
 	// wwan: 无线广域网 (通常是虚拟的)
 	virtualNetPrefixes := []string{
-		"lo", "veth", "docker", "br-", "vmnet", "vboxnet", "tap", "tun", "ipsec", "ppp", "bond", "dummy", "sit", "wwan", "awdl",
+		"lo", "veth", "docker", "br-", "vmnet", "vboxnet", "tap", "tun", "ipsec",
+		"ppp", "bond", "dummy", "sit", "wwan", "awdl", "llw",
 	}
 
 	interfaces, err := net.Interfaces()
